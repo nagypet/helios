@@ -1,0 +1,98 @@
+# helios
+
+> Copyright © 2017 Peter Nagy
+
+
+## Presentation
+
+This software executes as a linux demon for controlling the wrong bypass
+behaviour of the Helios KWL EC370WR ventilation system. The firmware of
+the Helios device is 2.24. The problem is that in summer operation the room
+could be cooled at night by the cooler outdoor air by opening the bypass
+valve, but in the firmware 2.24 it does not work correctly, the bypass
+never opens. This little software reads the temperature values via modbus/tcp
+and opens the bypass valve if the needed conditions meet.
+
+My software is based on mbpoll (https://github.com/epsilonrt/mbpoll).
+
+mbpoll is a command line utility to communicate with ModBus slave (RTU or TCP).  
+It uses [libmodbus](http://libmodbus.org/).  
+This is a multiplatform project, the compilation was tested on GNU Linux
+x86 and x86_64, Microsoft Windows 7 x86 and GNU Linux ARM 6 (Raspbian).  
+Although the syntax of these options is very close modpoll proconX program,
+it is a completely independent project.
+
+mbpoll can:
+
+- read discrete inputs
+- read and write binary outputs (*coil*)
+- read input registers
+- read and write output registers (*holding register*)
+
+The reading and writing registers may be in decimal, hexadecimal or 
+floating single precision.
+
+## Installation
+
+* Install dependencies:
+
+        sudo apt-get update
+        sudo apt-get install qt4-qmake qt4-dev-tools build-essential
+
+* Check the version of qmake (must be 2.X) :
+
+        qmake -v
+          QMake version 2.01a
+          Using Qt version 4.8.6 in /usr/lib/arm-linux-gnueabihf
+
+  If the version is 3.X is that you have QT5, you must select QT4:
+
+        qtchooser -l
+          4
+          5
+          default
+          qt4-arm-linux-gnueabihf
+          qt4
+          qt5-arm-linux-gnueabihf
+          qt5
+        qtchooser -print-env
+          QT_SELECT="default"
+          QTTOOLDIR="/usr/lib/arm-linux-gnueabihf/qt5/bin"
+          QTLIBDIR="/usr/lib/arm-linux-gnueabihf"
+        export QT_SELECT="qt4"
+        qmake -v
+          QMake version 2.01a
+          Using Qt version 4.8.6 in /usr/lib/arm-linux-gnueabihf
+
+* Build and install helios :
+
+        cd helios
+        qmake
+        make
+        sudo make install
+	sudo cp ./start_helios.sh /etc/init.d
+	sudo cp ./restart_helios /etc/cron.hourly
+
+* Starting the demon
+        /etc/init.d/start_helios.sh start
+
+log files are creted in /var/packages/helios. If a problem occures at starting
+the demon please manually create the log directory.
+
+That's all !
+
+---
+This file is part of a home automation project "Helios bypass control".
+
+Helios bypass control is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Helios bypass control is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Foobar.  If not, see <http://www.gnu.org/licenses/>.

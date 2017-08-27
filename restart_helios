@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+
+sudo /etc/init.d/start_helios.sh start
+

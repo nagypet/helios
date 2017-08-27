@@ -1,0 +1,5 @@
+sudo cp obj/release/helios /usr/local/bin
+sudo cp ./start_helios.sh /etc/init.d
+sudo cp ./restart_helios /etc/cron.hourly
+
+

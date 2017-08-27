@@ -1,0 +1,14 @@
+/var/packages/helios/helios.err /var/packages/helios/helios.log {
+	daily
+	size 1M
+	rotate 15
+	nocompress
+	missingok
+	notifempty
+	create 644 root root
+	su root root
+	postrotate
+		/etc/init.d/start_helios.sh restart
+	endscript
+}
+

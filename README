@@ -72,8 +72,9 @@ floating single precision.
         sudo make install
 	sudo cp ./start_helios.sh /etc/init.d
 	sudo cp ./restart_helios /etc/cron.hourly
+	update-rc.d start_helios.sh defaults
 
-* Starting the demon
+* Starting the demon manually (otherwise it starts at system boot)
         /etc/init.d/start_helios.sh start
 
 log files are creted in /var/packages/helios. If a problem occures at starting

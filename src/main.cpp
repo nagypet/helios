@@ -49,6 +49,7 @@ void vHello (void);
 static char * progname;
 static HeliosKWLEC370WR* pHelios = NULL;
 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 
 int main( int argc, char **argv )
 {

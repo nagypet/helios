@@ -39,6 +39,8 @@ const char* HeliosKWLEC370WR::PORT = "502";
 
 HeliosKWLEC370WR::HeliosKWLEC370WR()
 {
+    myModbusPtr = NULL;
+    myBypassState = false;
 }
 
 
@@ -226,6 +228,12 @@ std::string _getTimestamp()
 
 void HeliosKWLEC370WR::_openModbus()
 {
+    if ( myModbusPtr )
+    {
+        // already open
+        return;
+    }
+
     myModbusPtr = modbus_new_tcp_pi ( IPADDRESS, PORT );
     if ( myModbusPtr == NULL )
     {
@@ -253,8 +261,6 @@ void HeliosKWLEC370WR::_openModbus()
     usec = (uint32_t) 0;
     modbus_set_response_timeout ( myModbusPtr, sec, usec);
     PDEBUG ("Set response timeout to %d sec, %d us", sec, usec);
-
-    // TODO: SIGINT handling
 
     modbus_set_slave( myModbusPtr, SLAVEID );
 }

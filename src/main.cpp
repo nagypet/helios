@@ -86,7 +86,6 @@ int main( int argc, char **argv )
         // Actions in each cycle
         try
         {
-            //pHelios->ModulTest();
             pHelios->ControlBypassValve();
         }
         catch( HeliosException& e )

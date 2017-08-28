@@ -62,7 +62,11 @@ void HeliosKWLEC370WR::ModulTest()
 
     //std::string retVal = GetVariable( "v00000" );
 
-    ControlBypassValve();
+    //ControlBypassValve();
+    ProcessData data = 0;
+    data.SetHysteresis( 0.5 );
+    data = 3.14;
+    printf( "%.1f\n", data.Value());
 }
 
 

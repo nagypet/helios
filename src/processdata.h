@@ -70,6 +70,11 @@ class ProcessData
                             myHysteresis = other.myHysteresis;
                         }
 
+        virtual void operator=( const double value )
+                        {
+                            myValue = value;
+                        }
+
         virtual bool operator>( const double value )
                         {
                             return ( myValue > value + myHysteresis );

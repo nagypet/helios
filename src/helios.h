@@ -32,12 +32,17 @@
 
 //*** INCLUDES ****************************************************************
 
+#include <stdio.h>
 #include <modbus.h>
 #include <string>
 #include <exception>
+#include "processdata.h"
+
 
 //*** DEFINES AND CONSTANTS ***************************************************
-#define LOGERROR(fmt,...) fprintf (stderr, "%s error: " fmt "\n", _getTimestamp().c_str(), ##__VA_ARGS__)
+#define LOGERR(fmt,...) fprintf(stderr, "%s error: " fmt "\n", _getTimestamp().c_str(), ##__VA_ARGS__)
+#define LOGINFO(fmt,...) printf("%s, " fmt "\n", _getTimestamp().c_str(), ##__VA_ARGS__)
+
 
 //*** TYPES AND CLASSES *******************************************************
 std::string _getTimestamp();
@@ -96,6 +101,10 @@ class HeliosKWLEC370WR
     protected:
         modbus_t*       myModbusPtr = NULL;
         bool            myBypassState = false; // false: closed; true: open
+        ProcessData     myOutdoorTemp;
+        ProcessData     myRoomTemp;
+        ProcessData     myMinOutdoorTemp;
+
 
     //------- Services --------------
     public:
@@ -109,6 +118,7 @@ class HeliosKWLEC370WR
         virtual void    SetVariable( std::string varName, double value );
         virtual void    ModulTest();
         virtual void    ControlBypassValve();
+        virtual void    LogProcessData();
 
     protected:
         virtual void    _openModbus();

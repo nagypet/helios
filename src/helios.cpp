@@ -41,6 +41,12 @@ HeliosKWLEC370WR::HeliosKWLEC370WR()
 {
     myModbusPtr = NULL;
     myBypassState = false;
+    myOutdoorTemp = 0;
+    myRoomTemp = 0;
+    myMinOutdoorTemp = 0;
+    myOutdoorTemp.SetHysteresis( 0.5 );
+    myRoomTemp.SetHysteresis( 0.5 );
+    myMinOutdoorTemp.SetHysteresis( 0.5 );
 }
 
 
@@ -189,26 +195,27 @@ void HeliosKWLEC370WR::SetVariable( std::string varName, double value )
 
 void HeliosKWLEC370WR::ControlBypassValve()
 {
-    ProcessData outdoorTemp = _getAirTemperature( 1 );
-    ProcessData roomTemp = _getAirTemperature( 4 );
-    ProcessData minOutdoorTemp = _getBypassMinOutdoorTemp();
-    outdoorTemp.SetHysteresis( 0.5 );
-    roomTemp.SetHysteresis( 0.5 );
-    minOutdoorTemp.SetHysteresis( 0.5 );
+    myOutdoorTemp = _getAirTemperature( 1 );
+    myRoomTemp = _getAirTemperature( 4 );
+    myMinOutdoorTemp = _getBypassMinOutdoorTemp();
 
-    printf( "%s Outdoor temp: %.1f, room temp: %.1f, min outdoor temp: %.1f\n", _getTimestamp().c_str(), outdoorTemp.Value(), roomTemp.Value(), minOutdoorTemp.Value() );
-
-    if ( ( outdoorTemp > minOutdoorTemp ) && ( outdoorTemp < roomTemp ) && ( roomTemp > 23.0 ) )
+    if ( ( myOutdoorTemp > myMinOutdoorTemp ) && ( myOutdoorTemp < myRoomTemp ) && ( myRoomTemp > 23.0 ) )
     {
         // all three condition met
         // Room will be cooled by the cooler outdoor air
         _openBypass();
     }
-    else if ( ( outdoorTemp < minOutdoorTemp ) || ( outdoorTemp > roomTemp ) || ( roomTemp < 23.0 ) )
+    else if ( ( myOutdoorTemp < myMinOutdoorTemp ) || ( myOutdoorTemp > myRoomTemp ) || ( myRoomTemp < 23.0 ) )
     {
         // close the bypass if any of the above conditions meet
         _closeBypass();
     }
+}
+
+
+void HeliosKWLEC370WR::LogProcessData()
+{
+    LOGINFO( "%.1f, %.1f, %.1f", myOutdoorTemp.Value(), myRoomTemp.Value(), myMinOutdoorTemp.Value() );
 }
 
 

@@ -68,13 +68,22 @@ int main( int argc, char **argv )
         vIoErrorExit ("Unable to create the HeliosKWLEC370WR object");
     }
 
+#ifdef DEBUG
+        int cycleTime = 1000; // 1 sec
+#else
+        int cycleTime = 60 * 1000; // 1 min
+#endif
+    int cycleCounter = 100;
+
+    printf( "Timestamp, Outdoor temp, Room temp, Min outdoor temp\n" );
+
     while ( 1 )
     {
-#ifdef DEBUG
-        delay_ms( 1000 );
-#else
-        delay_ms( 60 * 1000 );
-#endif
+        delay_ms( cycleTime );
+
+        cycleCounter++;
+
+        // Actions in each cycle
         try
         {
             //pHelios->ModulTest();
@@ -82,13 +91,19 @@ int main( int argc, char **argv )
         }
         catch( HeliosException& e )
         {
-            LOGERROR( "%s", e.what() );
+            LOGERR( "%s", e.what() );
         }
         catch(...)
         {
             vIoErrorExit ("Unhandled exception caught");
         }
 
+        // Actions in all 5th cycle
+        if ( cycleCounter >= 5 )
+        {
+            cycleCounter = 0;
+            pHelios->LogProcessData();
+        }
     }
 
     vSigIntHandler (SIGTERM);

@@ -1,4 +1,4 @@
-/var/packages/helios/helios.err /var/packages/helios/helios.log {
+/var/local/helios/helios.err /var/local/helios/helios.log {
 	daily
 	size 1M
 	rotate 15

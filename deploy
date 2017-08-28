@@ -1,5 +1,5 @@
-sudo cp obj/release/helios /usr/local/bin
-sudo cp ./start_helios.sh /etc/init.d
-sudo cp ./restart_helios /etc/cron.hourly
-
-
+sudo cp obj/release/heliosd /usr/local/bin
+sudo cp helios /etc/init.d
+sudo cp restart_helios /etc/cron.hourly
+sudo cp logrotate_helios /etc/logrotate.d
+sudo update-rc.d helios defaults

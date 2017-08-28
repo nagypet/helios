@@ -1,0 +1,82 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          helios
+# Required-Start:    $ALL
+# Required-Stop:     $ALL
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start helios daemon at boot time
+# Description:       Enable service provided by daemon.
+### END INIT INFO
+
+set -e
+
+umask 022
+
+. /lib/lsb/init-functions
+
+PIDFILE="/run/helios.pid"
+LOGFILE="/var/local/helios/helios.log"
+ERRFILE="/var/local/helios/helios.err"
+DAEMON="/usr/local/bin/heliosd"
+
+check_privsep_dir() {
+    # Create the PrivSep empty dir if necessary
+    if [ ! -d /var/local/helios ]; then
+        mkdir /var/local/helios
+	chmod 0755 /var/local/helios
+    fi
+}
+
+
+case "$1" in
+  start)
+        check_privsep_dir
+	log_daemon_msg "Starting helios daemon" "heliosd" || true
+	if sudo start-stop-daemon --start --quiet --oknodo --make-pidfile --pidfile $PIDFILE --background --startas /bin/bash -- -c "exec $DAEMON >> $LOGFILE 2>> $ERRFILE"; then
+	    log_end_msg 0 || true
+	else
+	    log_end_msg 1 || true
+	fi
+	;;
+
+
+  stop)
+        log_daemon_msg "Stopping helios daemon" "heliosd" || true
+	if sudo start-stop-daemon --stop --quiet --oknodo --remove-pidfile --pidfile $PIDFILE; then
+	    log_end_msg 0 || true
+	else
+	    log_end_msg 1 || true
+	fi
+	;;
+
+
+  restart)
+	check_privsep_dir
+	log_daemon_msg "Restarting helios daemon" "heliosd" || true
+	sudo start-stop-daemon --stop --quiet --oknodo --remove-pidfile --pidfile $PIDFILE
+	if sudo start-stop-daemon --start --quiet --oknodo --make-pidfile --pidfile $PIDFILE --background --startas /bin/bash -- -c "exec $DAEMON >> $LOGFILE 2>> $ERRFILE"; then
+	    log_end_msg 0 || true
+	else
+	    log_end_msg 1 || true
+	fi
+	;;
+
+
+  status)
+        status_of_proc -p $PIDFILE $DAEMON heliosd && exit 0 || exit $?
+	;;
+
+
+  logview)
+        tail -f $LOGFILE
+	;;
+
+
+  *)
+        log_action_msg "Usage: /etc/init.d/helios {start|stop|restart|status|logview}" || true
+	exit 1
+esac
+
+exit 0

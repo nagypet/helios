@@ -13,7 +13,7 @@
 #. /lib/lsb/init-functions
 
 dir="/var/packages/helios"
-cmd="helios"
+cmd="heliosd"
 user="root"
 
 name="helios"

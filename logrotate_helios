@@ -8,7 +8,7 @@
 	create 644 root root
 	su root root
 	postrotate
-		/etc/init.d/start_helios.sh restart
+		/etc/init.d/helios restart
 	endscript
 }
 

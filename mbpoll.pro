@@ -1,4 +1,4 @@
-TARGET = helios
+TARGET = heliosd
 TEMPLATE = app
 CONFIG += console
 QT -= core gui
@@ -79,4 +79,5 @@ unix {
 }
 
 DISTFILES += \
-    COPYING
+    COPYING \
+    helios

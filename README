@@ -5,7 +5,7 @@
 
 ## Presentation
 
-This software executes as a linux demon for controlling the wrong bypass
+This software executes as a linux daemon for controlling the wrong bypass
 behaviour of the Helios KWL EC370WR ventilation system. The firmware of
 the Helios device is 2.24. The problem is that in summer operation the room
 could be cooled at night by the cooler outdoor air by opening the bypass
@@ -66,19 +66,16 @@ floating single precision.
 
 * Build and install helios :
 
-        cd helios
+        cd modbus
         qmake
         make
         sudo make install
-	sudo cp ./start_helios.sh /etc/init.d
-	sudo cp ./restart_helios /etc/cron.hourly
-	update-rc.d start_helios.sh defaults
+	./deploy
 
 * Starting the demon manually (otherwise it starts at system boot)
-        /etc/init.d/start_helios.sh start
+        /etc/init.d/helios start
 
-log files are creted in /var/packages/helios. If a problem occures at starting
-the demon please manually create the log directory.
+log files are creted in /var/locale/helios.
 
 That's all !
 

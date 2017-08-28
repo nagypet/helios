@@ -1,4 +1,7 @@
-sudo cp obj/release/heliosd /usr/local/bin
+if [ -f obj/release/heliosd ]
+then
+	sudo cp obj/release/heliosd /usr/local/bin
+fi
 sudo cp helios /etc/init.d
 sudo cp restart_helios /etc/cron.hourly
 sudo cp logrotate_helios /etc/logrotate.d

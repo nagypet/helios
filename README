@@ -72,10 +72,10 @@ floating single precision.
         sudo make install
 	./deploy
 
-* Starting the demon manually (otherwise it starts at system boot)
+* Starting the daemon manually (otherwise it starts at system boot)
         /etc/init.d/helios start
 
-log files are creted in /var/locale/helios.
+log files are creted in /var/local/helios.
 
 That's all !
 

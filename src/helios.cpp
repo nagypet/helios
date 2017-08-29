@@ -340,6 +340,7 @@ void HeliosKWLEC370WR::_openBypass()
 
     if ( !myBypassState )
     {
+        LogProcessData();
         printf( ">>>Bypass state changed to OPEN!\n");
     }
 
@@ -355,6 +356,7 @@ void HeliosKWLEC370WR::_closeBypass()
 
     if ( myBypassState )
     {
+        LogProcessData();
         printf( ">>>Bypass state changed to CLOSED!\n");
     }
 

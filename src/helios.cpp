@@ -37,7 +37,7 @@ const char* HeliosKWLEC370WR::IPADDRESS = "192.168.128.40";
 const char* HeliosKWLEC370WR::PORT = "502";
 
 
-HeliosKWLEC370WR::HeliosKWLEC370WR()
+HeliosKWLEC370WR::HeliosKWLEC370WR() noexcept
 {
     myModbusPtr = NULL;
     myBypassState = false;
@@ -63,7 +63,7 @@ void HeliosKWLEC370WR::ModulTest()
     //std::string retVal = GetVariable( "v00000" );
 
     //ControlBypassValve();
-    ProcessData data = 0;
+    ProcessData data( 0 );
     data.SetHysteresis( 0.5 );
     data = 3.14;
     printf( "%.1f\n", data.Value());

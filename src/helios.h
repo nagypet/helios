@@ -70,7 +70,7 @@ class HeliosException : public std::exception
 
                         };
 
-        virtual const char* what()
+        virtual const char* what() noexcept
                         {
                             return myErrorMsg.c_str();
                         }
@@ -109,7 +109,7 @@ class HeliosKWLEC370WR
     //------- Services --------------
     public:
         // Constructor
-                        HeliosKWLEC370WR();
+                        HeliosKWLEC370WR() noexcept;
 
         // Destructor
         virtual         ~HeliosKWLEC370WR();

@@ -49,12 +49,12 @@ class ProcessData
     //------- Services --------------
     public:
         // Constructor
-                        ProcessData( double value = 0.0 )
+        explicit        ProcessData( double value = 0.0 )
                         {
                             myValue = value;
                         };
 
-                        ProcessData( const ProcessData& other )
+        explicit        ProcessData( const ProcessData& other )
                         {
                             *this = other;
                         };
@@ -64,15 +64,20 @@ class ProcessData
                             myHysteresis = value;
                         }
 
-        virtual void operator=( const ProcessData& other )
+        virtual ProcessData& operator=( const ProcessData& other )
                         {
-                            myValue = other.myValue;
-                            myHysteresis = other.myHysteresis;
+                            if ( this != &other )
+                            {
+                                myValue = other.myValue;
+                                myHysteresis = other.myHysteresis;
+                            }
+                            return *this;
                         }
 
-        virtual void operator=( const double value )
+        virtual ProcessData& operator=( const double value )
                         {
                             myValue = value;
+                            return *this;
                         }
 
         virtual bool operator>( const double value )
@@ -80,7 +85,7 @@ class ProcessData
                             return ( myValue > value + myHysteresis );
                         }
 
-        virtual bool operator>( const ProcessData other )
+        virtual bool operator>( const ProcessData& other )
                         {
                             return *this > other.myValue;
                         }
@@ -90,7 +95,7 @@ class ProcessData
                             return ( myValue < value - myHysteresis );
                         }
 
-        virtual bool operator<( const ProcessData other )
+        virtual bool operator<( const ProcessData& other )
                         {
                             return *this < other.myValue;
                         }

@@ -128,6 +128,12 @@ void vHello (void)
 void vFailureExit (bool bHelp, const char *format, ...) {
   va_list va;
 
+  if ( pHelios != NULL )
+  {
+      delete pHelios;
+      pHelios = NULL;
+  }
+
   va_start (va, format);
   fprintf (stderr, "%s: ", progname);
   vfprintf (stderr, format, va);
